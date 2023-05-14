@@ -9,11 +9,26 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'COLltra2-1mqLazNQxCCc', name: 'Anna Klein', number: '459-12-56' },
-    ],
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const savedContatcs = localStorage.getItem('phoneBook');
+    const parsedContatcs = JSON.parse(savedContatcs);
+
+    if(parsedContatcs){
+      this.setState({ 
+        contacts: parsedContatcs,
+      });
+    }
+  }
+
+  componentDidUpdate(_, prevState){
+    if(this.state.contacts !== prevState.contacts)
+
+    localStorage.setItem('phoneBook', JSON.stringify(this.state.contacts));
+  }
 
   formSubmitHandler = ({ name, number }) => {
     const newContact = {
